@@ -1,4 +1,4 @@
-PET_SCHEMA_FULL_DATE = {
+PET_SCHEMA_FULL_DATA = {
     "type": "object",
     "properties": {
         "id": {

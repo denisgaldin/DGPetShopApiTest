@@ -2,7 +2,7 @@ import allure
 import jsonschema
 import requests
 from .schemas.pet_schemas import PET_SCHEMA
-from .schemas.pet_shemas_full_date import PET_SCHEMA_FULL_DATE
+from .schemas.pet_schemas_full_data import PET_SCHEMA_FULL_DATA
 
 BASE_URL = "http://5.181.109.28:9090/api/v3"
 
@@ -70,7 +70,7 @@ class TestPet:
             assert response_json["status"] == payload["status"], "статус питомнца не совпадает с ожидаемым"
 
     @allure.title("Добавление нового питомца c полными данными")
-    def test_add_pet_full_date(self):
+    def test_add_pet_full_data(self):
         with allure.step("Подготовка полных данных для создания питомца"):
             payload = {
                 "id": 10,
@@ -83,9 +83,10 @@ class TestPet:
                     "string"
                 ],
                 "tags": [
-                    {"id": 0,
-                     "name": "string"
-                     }
+                    {
+                        "id": 0,
+                        "name": "string"
+                    }
                 ],
                 "status": "available"
             }
@@ -96,7 +97,7 @@ class TestPet:
 
         with allure.step("Проверка статуса ответа и валидации JSON схемы"):
             assert response.status_code == 200, 'Код ответа не совпал с ожидаемым'
-            jsonschema.validate(response.json(), PET_SCHEMA_FULL_DATE)
+            jsonschema.validate(response.json(), PET_SCHEMA_FULL_DATA)
 
         with allure.step("Проверка параметров питомца в ответе"):
             assert response_json["id"] == payload["id"], "id питомца не совпадает с ожидаемым"
