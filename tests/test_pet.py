@@ -75,19 +75,22 @@ class TestPet:
             payload = {
                 "id": 10,
                 "name": "doggie",
-                "category": {
-                    "id": 1,
-                    "name": "Dogs"
-                },
-                "photoUrls": [
-                    "string"
-                ],
-                "tags": [
+                "category":
                     {
-                        "id": 0,
-                        "name": "string"
-                    }
-                ],
+                        "id": 1,
+                        "name": "Dogs"
+                    },
+                "photoUrls":
+                    [
+                        "string"
+                    ],
+                "tags":
+                    [
+                        {
+                            "id": 0,
+                            "name": "string"
+                        }
+                    ],
                 "status": "available"
             }
 
