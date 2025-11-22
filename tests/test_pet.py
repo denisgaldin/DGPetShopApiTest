@@ -75,18 +75,27 @@ class TestPet:
             payload = {
                 "id": 10,
                 "name": "doggie",
-                "category": {"id": 1, "name": "Dogs"},
-                "photoUrls": ["string"],
-                "tags": [{"id": 0, "name": "string"}],
+                "category": {
+                    "id": 1,
+                    "name": "Dogs"
+                },
+                "photoUrls": [
+                    "string"
+                ],
+                "tags": [
+                    {"id": 0,
+                     "name": "string"
+                     }
+                ],
                 "status": "available"
             }
 
-        with allure.step("Отправка запроса на созданте питомца"):
+        with allure.step("Отправка запроса на создание питомца"):
             response = requests.post(f"{BASE_URL}/pet", json=payload)
             response_json = response.json()
 
         with allure.step("Проверка статуса ответа и валидации JSON схемы"):
-            assert response.status_code == 200
+            assert response.status_code == 200, 'Код ответа не совпал с ожидаемым'
             jsonschema.validate(response.json(), PET_SCHEMA_FULL_DATE)
 
         with allure.step("Проверка параметров питомца в ответе"):
