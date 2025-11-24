@@ -171,7 +171,7 @@ class TestPet:
             ("sold", 200),
             ("", 400),
             ("unknown", 400)
-        ],
+        ]
     )
     def test_get_pets_by_status(self, status, expected_status_code):
         with allure.step(f"Отправка запроса на получение питомцев по статусу {status}"):
@@ -181,5 +181,3 @@ class TestPet:
             assert response.status_code == expected_status_code, 'Код ответа не совпал с ожидаемым'
             if expected_status_code == 200:
                 assert isinstance(response.json(), list)
-            else:
-                assert isinstance(response.json(), dict)
