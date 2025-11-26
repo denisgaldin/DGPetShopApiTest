@@ -22,10 +22,19 @@ class TestStore:
 
         with allure.step("Отправка запроса на размещения заказа"):
             response = requests.post(f"{BASE_URL}/store/order", json=payload)
+            response_json = response.json()
 
         with allure.step("Проверка статуса ответа и валидации JSON схемы"):
             assert response.status_code == 200
             jsonschema.validate(response.json(), STORE_SCHEMA)
+
+        with allure.step("Проверка параметров заказа в ответе"):
+            assert response_json["id"] == payload["id"], "id заказа не совпадает с ожидаемым"
+            assert response_json["petId"] == payload["petId"], "id питомца не совпадает с ожидаемым"
+            assert response_json["quantity"] == payload["quantity"], "Количество  не совпадает с ожидаемым"
+            assert response_json["status"] == payload[
+                "status"], "Статус заказа не совпадает с ожидаемым"
+            assert response_json["complete"] == payload["complete"], "Готовность заказа совпадает с ожидаемым"
 
     @allure.title("Получение информации о заказе по ID")
     def test_get_by_id(self, create_order):
