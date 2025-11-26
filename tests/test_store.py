@@ -72,11 +72,10 @@ class TestStore:
 
     @allure.title("Получение инвентаря магазина")
     def test_get_inventory_store(self):
-        with allure.step("Получение данных о том что в инвентаре"):
-            with allure.step("Отправка запроса на получение инвентаря магазина"):
-                response = requests.get(f"{BASE_URL}/store/inventory")
-                response_json = response.json()
+        with allure.step("Отправка запроса на получение инвентаря магазина"):
+            response = requests.get(f"{BASE_URL}/store/inventory")
+            response_json = response.json()
 
-            with allure.step("Проверка статуса ответа и валидации JSON схемы"):
-                assert response.status_code == 200
-                jsonschema.validate(instance=response.json(), schema=SCHEMA_DATA_INVENTORY)
+        with allure.step("Проверка статуса ответа и валидации JSON схемы"):
+            assert response.status_code == 200
+            jsonschema.validate(instance=response.json(), schema=SCHEMA_DATA_INVENTORY)
