@@ -57,7 +57,7 @@ class TestPet:
                 "status": "available"
             }
 
-        with allure.step("Отправка запроса на созданте питомца"):
+        with allure.step("Отправка запроса на создание питомца"):
             response = requests.post(f"{BASE_URL}/pet", json=payload)
             response_json = response.json()
 
