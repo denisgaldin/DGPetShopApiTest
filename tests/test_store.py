@@ -1,7 +1,7 @@
 import allure
 import jsonschema
 import requests
-import pytest
+from .schemas.inventory_store_schema import SCHEMA_DATA_INVENTORY
 from .schemas.store_schemas import STORE_SCHEMA
 
 BASE_URL = "http://5.181.109.28:9090/api/v3"
@@ -10,7 +10,7 @@ BASE_URL = "http://5.181.109.28:9090/api/v3"
 @allure.feature("Store")
 class TestStore:
     @allure.title("Размещение заказа")
-    def test_add_pet(self):
+    def test_place_order(self):
         with allure.step("Подготовка данных для размещения заказа"):
             payload = {
                 "id": 1,
@@ -71,26 +71,12 @@ class TestStore:
             assert resource.status_code == 404, 'Код ответа не совпал с ожидаемым'
 
     @allure.title("Получение инвентаря магазина")
-    @pytest.mark.parametrize(
-        "expected_status, expected_count",
-        [
-            ("approved", 57),
-            ("delivered", 50)
-        ]
-    )
-    def test_get_inventory_store(self, expected_status, expected_count):
-        with allure.step(f"Отправка запроса на получение данных об инвентаре магазина"):
-            response = requests.get(f"{BASE_URL}/store/inventory")
+    def test_get_inventory_store(self):
+        with allure.step("Получение данных о том что в инвентаре"):
+            with allure.step("Отправка запроса на получение инвентаря магазина"):
+                response = requests.get(f"{BASE_URL}/store/inventory")
+                response_json = response.json()
 
-            with allure.step("Проверка статуса ответа"):
-                assert response.status_code == 200, 'Код ответа не совпал с ожидаемым'
-
-        with allure.step("Проверка формата ответа и данных"):
-            inventory_data = response.json()
-
-        assert isinstance(inventory_data, dict), "Ответ не является словарем"
-
-        expected_keys = ["approved", "delivered"]
-        for key in expected_keys:
-            assert key in inventory_data, f"Ключ {key} отсутствует в ответе"
-            assert isinstance(inventory_data[key], int), f"Значение для {key} не является числом"
+            with allure.step("Проверка статуса ответа и валидации JSON схемы"):
+                assert response.status_code == 200
+                jsonschema.validate(instance=response.json(), schema=SCHEMA_DATA_INVENTORY)
