@@ -1,8 +1,8 @@
 import allure
 import jsonschema
 import requests
-from .schemas.inventory_store_schema import SCHEMA_DATA_INVENTORY
-from .schemas.store_schemas import STORE_SCHEMA
+from .schemas.store_schemas import STORE_ORDER_SCHEMA
+from .schemas.store_schemas import STORE_INVENTORY_SCHEMA
 
 BASE_URL = "http://5.181.109.28:9090/api/v3"
 
@@ -26,7 +26,7 @@ class TestStore:
 
         with allure.step("Проверка статуса ответа и валидации JSON схемы"):
             assert response.status_code == 200
-            jsonschema.validate(response.json(), STORE_SCHEMA)
+            jsonschema.validate(response.json(), STORE_ORDER_SCHEMA)
 
         with allure.step("Проверка параметров заказа в ответе"):
             assert response_json["id"] == payload["id"], "id заказа не совпадает с ожидаемым"
@@ -78,4 +78,4 @@ class TestStore:
 
         with allure.step("Проверка статуса ответа и валидации JSON схемы"):
             assert response.status_code == 200
-            jsonschema.validate(instance=response.json(), schema=SCHEMA_DATA_INVENTORY)
+            jsonschema.validate(instance=response.json(), schema=STORE_INVENTORY_SCHEMA)
